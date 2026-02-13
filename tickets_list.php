@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuickTix - Liste des tickets</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <header class="main-header">
+    <div class="header-content">
+      <img src="logo.png" alt="QuickTix Logo" class="logo" />
+      <h1 class="header-title">QuickTix</h1>
+      <a href="index.html" class="logout-button">Se déconnecter</a>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <nav class="sidebar">
+      <ul>
+        <li><a href="dashboard.php">Dashboard</a></li>
+        <li><a href="tickets_list.php" class="active">Tickets List</a></li>
+        <li><a href="project_list.php">Project List</a></li>
+        <li><a href="user_profile.php">Profil Utilisateur</a></li>
+        <li><a href="settings.php">Paramètres</a></li>
+      </ul>
+    </nav>
+
+    <main class="dashboard-content">
+      <div class="table-container">
+        <div class="table-header">
+          <div style="display: flex; align-items: center; gap: 15px">
+            <h2>Tous les tickets</h2>
+            <select id="statusFilter" class="form-select" style="width: auto; padding: 5px">
+              <option value="all">Tous</option>
+              <option value="Ouvert">Ouvert</option>
+              <option value="En cours">En cours</option>
+              <option value="Fermé">Fermé</option>
+            </select>
+          </div>
+          <a href="Add_ticket.html" class="add-ticket-button">Ajouter un ticket</a>
+        </div>
+        <table class="tickets-table">
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Description</th>
+              <th>Statut</th>
+              <th>Prix</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ticket 1</td>
+              <td>Description du ticket 1</td>
+              <td>Ouvert</td>
+              <td>10€</td>
+              <td><button class="btn-view-details">Voir détails</button></td>
+            </tr>
+            <tr>
+              <td>Ticket 2</td>
+              <td>Description du ticket 2</td>
+              <td>En cours</td>
+              <td>20€</td>
+              <td><button class="btn-view-details">Voir détails</button></td>
+            </tr>
+            <tr>
+              <td>Ticket 3</td>
+              <td>Description du ticket 3</td>
+              <td>Fermé</td>
+              <td>30€</td>
+              <td><button class="btn-view-details">Voir détails</button></td>
+            </tr>
+            <tr>
+              <td>Ticket 4</td>
+              <td>Description du ticket 4</td>
+              <td>En cours</td>
+              <td>40€</td>
+              <td><button class="btn-view-details">Voir détails</button></td>
+            </tr>
+            <tr>
+              <td>Ticket 5</td>
+              <td>Description du ticket 5</td>
+              <td>Fermé</td>
+              <td>50€</td>
+              <td><button class="btn-view-details">Voir détails</button></td>
+            </tr>
+            <tr>
+              <td>Ticket 6</td>
+              <td>Description du ticket 6</td>
+              <td>En cours</td>
+              <td>60€</td>
+              <td><button class="btn-view-details">Voir détails</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  <!-- Modal -->
+  <div id="ticketModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 id="modalTitle">Détails du Ticket</h2>
+      <div class="modal-body">
+        <p><strong>Description:</strong> <span id="modalDesc"></span></p>
+        <p><strong>Statut:</strong> <span id="modalStatus"></span></p>
+        <p><strong>Prix:</strong> <span id="modalPrice"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById("ticketModal");
+      const closeBtn = document.querySelector(".close-modal");
+      const viewBtns = document.querySelectorAll(".btn-view-details");
+
+      // Elements to populate
+      const modalTitle = document.getElementById("modalTitle");
+      const modalDesc = document.getElementById("modalDesc");
+      const modalStatus = document.getElementById("modalStatus");
+      const modalPrice = document.getElementById("modalPrice");
+
+      viewBtns.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const row = e.target.closest("tr");
+          const cells = row.querySelectorAll("td");
+
+          // Cells indices: 0=Title, 1=Desc, 2=Status, 3=Price, 4=Action
+          modalTitle.textContent = cells[0].textContent;
+          modalDesc.textContent = cells[1].textContent;
+          modalStatus.textContent = cells[2].textContent;
+          modalPrice.textContent = cells[3].textContent;
+
+          modal.style.display = "flex";
+        });
+      });
+
+      closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+      window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+
+      // Filter logic
+      const statusFilter = document.getElementById("statusFilter");
+      const tableRows = document.querySelectorAll(".tickets-table tbody tr");
+
+      statusFilter.addEventListener("change", () => {
+        const selectedStatus = statusFilter.value;
+
+        tableRows.forEach((row) => {
+          const statusCell = row.cells[2]; // cellule de status
+          const statusText = statusCell.textContent.trim();
+
+          if (selectedStatus === "all" || statusText === selectedStatus) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

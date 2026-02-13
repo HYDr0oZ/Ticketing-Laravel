@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ajouter un ticket</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="main-header">
+    <div class="header-content">
+      <img src="logo.png" alt="QuickTix Logo" class="logo" />
+      <h1 class="header-title">QuickTix</h1>
+      <a href="index.html" class="logout-button">Se deconnecter</a>
+    </div>
+  </header>
+  <div class="app-container">
+    <nav class="sidebar">
+      <ul>
+        <li><a href="dashboard.php">Dashboard</a></li>
+        <li><a href="tickets_list.php">Tickets List</a></li>
+        <li><a href="project_list.php">Project List</a></li>
+        <li><a href="user_profile.php">Profil Utilisateur</a></li>
+        <li><a href="settings.php">Paramètres</a></li>
+      </ul>
+    </nav>
+    <main class="dashboard-content">
+      <div class="mb-20">
+        <a href="tickets_list.html" class="add-ticket-button">← Retour a la liste des tickets</a>
+      </div>
+
+      <div class="login-card content-card-medium">
+        <div class="login-header">
+          <h2>Nouveau Ticket</h2>
+        </div>
+        <form action="tickets_list.html" class="login-form">
+          <div class="input-group">
+            <label for="title">Titre du ticket</label>
+            <input type="text" id="title" name="title" placeholder="Ex: Problème connexion" required />
+          </div>
+
+          <div class="input-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" class="form-textarea"
+              placeholder="Détaillez le problème..."></textarea>
+          </div>
+
+          <div class="input-group">
+            <label for="price">Prix estimé (€)</label>
+            <input type="number" id="price" name="price" placeholder="0.00" step="0.01" />
+          </div>
+
+          <button type="submit" class="login-button">Créer le ticket</button>
+        </form>
+      </div>
+    </main>
+  </div>
+  <script src="validation.js"></script>
+</body>
+
+</html>
